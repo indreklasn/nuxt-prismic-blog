@@ -1,0 +1,28 @@
+{
+  "name": "vue-nuxt-prismic-blog",
+  "version": "1.0.0",
+  "description": "My pioneering Nuxt.js project",
+  "author": "Indrek Lasn",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "test": "jest"
+  },
+  "dependencies": {
+    "cross-env": "^5.2.0",
+    "nuxt": "^2.3.4",
+    "prismic-dom": "^2.1.0",
+    "prismic-javascript": "^2.0.1"
+  },
+  "devDependencies": {
+    "@vue/test-utils": "^1.0.0-beta.27",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-jest": "^23.6.0",
+    "jest": "^23.6.0",
+    "nodemon": "^1.18.9",
+    "vue-jest": "^3.0.2"
+  }
+}
