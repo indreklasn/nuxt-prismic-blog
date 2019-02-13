@@ -1,46 +1,28 @@
 <template>
   <section class="blog-post">
-
-    <h1 v-for="header in blog.header">
-      {{header.text}}
-    </h1>
-    <span v-for="content in blog.content">
-      <p class="paragraph" v-for="post in content">
-        {{post.text}}
-      </p>
-    </span>
+    <h1 class="title" v-for="(header, i) in blog_post.blog_post_title" :key="i">{{header.text}}</h1>
+    <p class="paragraph" v-for="(content, i) in blog_post.blog_content" :key="i">{{ content.text }}</p>
   </section>
 </template>
 
 <script>
-import Prismic from 'prismic-javascript';
+import Prismic from "prismic-javascript";
+import PrismicConfig from "./../prismic.config.js";
 
 export default {
-  data() {
-    return {
-      blog: {
-        header: [],
-        content: [],
-      }
-    }
-  },
-  created () {
-    const apiEndpoint = 'https://indrek-blog.cdn.prismic.io/api/v2'
-    const { header, content } = this.blog
+  async asyncData() {
+    const api = await Prismic.getApi(PrismicConfig.apiEndpoint);
+    const { results } = await api.query(
+      Prismic.Predicates.at("document.type", "blog-post"),
+      { lang: "en-us" }
+    );
 
-    Prismic.getApi(apiEndpoint)
-      .then(api => api.query(""))
-      .then(response => {
-        header.push(response.results[0].data.blog_post_title[0])
-        content.push(response.results[0].data.blog_content)
-      })
-      .catch(err => console.warn(err))
+    return { blog_post: results[0].data };
   }
 };
 </script>
 
 <style scoped>
-
 .blog-post {
   margin: 25px 0;
   padding: 0 100px;
@@ -55,10 +37,10 @@ export default {
   margin: 50px 0;
 }
 
- p {
+p {
   color: #000;
-  margin: 25px 0;
+  margin: 15px 0 5px;
   max-width: 450px;
   line-height: 1.44;
- }
+}
 </style>
