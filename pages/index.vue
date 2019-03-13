@@ -1,23 +1,30 @@
 <template>
   <section class="blog-post">
-    <h1 class="title" v-for="(header, i) in blog_post.blog_post_title" :key="i">{{header.text}}</h1>
-    <p class="paragraph" v-for="(content, i) in blog_post.blog_content" :key="i">{{ content.text }}</p>
+    <h1 class="title">{{ header }}</h1>
+    <p class="paragraph">{{ content }}</p>
   </section>
 </template>
 
 <script>
 import Prismic from "prismic-javascript";
+import PrismicDom from "prismic-dom" //importing the Dom
 import PrismicConfig from "./../prismic.config.js";
-
 export default {
   async asyncData() {
     const api = await Prismic.getApi(PrismicConfig.apiEndpoint);
-    const { results } = await api.query(
+    let blog_post = {};
+    const results = await api.query(
       Prismic.Predicates.at("document.type", "blog-post"),
-      { lang: "en-us" }
+      { lang: "en-us" } //This is a Prismic query option
     );
-
-    return { blog_post: results[0].data };
+    blog_post = results.results[0];
+    const header = PrismicDom.RichText.asText(blog_post.data.blog_post_title);
+    const content = PrismicDom.RichText.asText(blog_post.data.blog_content);
+    return { 
+        blog_post,
+        header,
+        content
+    };
   }
 };
 </script>
